@@ -1,0 +1,74 @@
+# ==========================================
+# Arduino IDE (1.x & 2.x) Build Artifacts
+# ==========================================
+build/
+bin/
+# Keep .hex for Web Flasher
+# *.hex 
+*.elf
+*.bin
+*.eep
+*.map
+*.o
+*.a
+*.d
+
+# Arduino IDE 2.x local index & language server cache
+.clangd/
+.vscode/.clangd/
+
+# ==========================================
+# PlatformIO (VS Code Extension)
+# ==========================================
+.pio/
+.pioenvs/
+.piolibdeps/
+.clang_complete
+.gcc-flags.json
+
+# ==========================================
+# Editor & IDE Configs
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
+*.code-workspace
+
+# CLion / IntelliJ / Eclipse
+.idea/
+cmake-build-*/
+.settings/
+.project
+.cproject
+
+# ==========================================
+# Secrets & Sensitive Data
+# ==========================================
+secrets.h
+config.h
+.env
+*.pem
+
+# ==========================================
+# OS & System Noise
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# Swap & Temporary Files
+*~
+*.swp
+*.swo
+*.bak
+*.tmp

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JiggleMouse | Setup & Control</title>
+    
+    <script src="https://github.com/dbuezas/arduino-web-uploader/releases/download/v1.0.0/main.js"></script>  
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <header>
+            <h1>JiggleMouse</h1>
+            <p class="intro">
+                <strong>JiggleMouse</strong> is an undetectable, physical hardware solution to keep your computer awake. Whether you are waiting for a massive 3D render to finish, downloading a huge game overnight, or simply stepping away to make coffee without your corporate chat switching to "Away," this open-source tool has your back. Completely plug-and-play with zero background software required.
+            </p>
+
+            <img src="img/jiggler_main.jpg" alt="JiggleMouse" class="main-photo">
+
+            <div class="info-box">
+                <h3>Device Features</h3>
+                <ul class="features-list">
+                    <li>🔌 <strong>100% Undetectable:</strong> Moves a physical mouse sensor. No suspicious USB HID drivers or background apps for IT to flag.</li>
+                    <li>📏 <strong>Ultra-Compact & Efficient:</strong> Smaller than a standard mouse and takes only a few grams of filament to print. Despite its tiny footprint, it easily supports mice much larger than itself!</li>
+                    <li>🛠️ <strong>Solderless Assembly:</strong> Build the entire project in minutes using standard jumper wires. No soldering iron required.</li>
+                    <li>💾 <strong>Persistent Memory:</strong> Saves your speeds, timings, and boot preferences directly to the Arduino's EEPROM.</li>
+                    <li>🌐 <strong>Web Configured:</strong> Connect to this page anytime to update settings via the Web Serial API — no coding required.</li>
+                    <li>⚡ <strong>Start on Boot:</strong> Configure the device to automatically start jiggling the moment it receives USB power.</li>
+                </ul>
+                
+                <img src="img/jiggling.gif" alt="Jiggler in Action Demo" class="diagram-img mt-1-5">
+            </div>
+        </header>
+
+        <section>
+            <div class="info-box"> 
+                <h3>How it works</h3>         
+                <ul class="features-list">
+                    <li>🧠 <strong>The Brains:</strong> An Arduino Nano sends precise control signals to a servo motor. You can fully customize the rotation speed, direction, and pause intervals directly from your browser.</li>
+                    <li>⚙️ <strong>The Mechanism:</strong> The servo spins a 3D-printed worm gear (which replaces the default plastic servo horn). This worm gear continuously drives a larger involute gear, rotating a flat jiggler disk mounted on a central rod.</li>
+                    <li>📏 <strong>The Clearance:</strong> The spinning disk is engineered to sit a fraction of a millimeter below the top lid. This tiny offset ensures the rotating plastic never rubs against or scratches the bottom of your mouse.</li>
+                    <li>🪄 <strong>The Illusion:</strong> When you place your mouse on top, its optical sensor detects the surface of the spinning disk. The mouse interprets this moving pattern as actual physical travel, sending standard movement signals to your PC and moving your cursor!</li>
+                </ul>
+
+                <img src="img/demo_close.gif" alt="JiggleMouse Mechanism Close-up" class="diagram-img mt-1-5">
+            </div>
+        </section>
+
+        <section>
+            <h2>Step 1: Hardware & Wiring</h2>
+            <div class="step">
+                <div class="hw-grid">
+                    <div class="hw-card">
+                        <div class="hw-img-container">
+                            <img src="img/nano.png" alt="Arduino Nano">
+                        </div>
+                        <h4>Arduino Nano <br><span class="highlight-badge">Type-C Recommended</span></h4>
+                        <p>The brains of the operation. Small, cheap, and easily programmable via USB. You can use an original board or any affordable clone you can find online.</p>
+                    </div>
+                    <div class="hw-card">
+                        <div class="hw-img-container">
+                            <img src="img/servo.png" alt="SG90 360 Servo">
+                        </div>
+                        <h4>SG90 Servo Motor <br><span class="highlight-badge">360° Continuous</span></h4>
+                        <p><strong>Crucial requirement:</strong> Standard 180° servos will not work. You must use the 360-degree continuous rotation version so the jiggler disc can spin freely.</p>
+                    </div>
+                </div>
+
+                <div class="note-box mt-1-5">
+                    <strong>Wiring Tip:</strong> To connect the Arduino and the servo, you simply need standard <strong>Male-to-Female jumper wires</strong> for a quick, solderless build. If you prefer a permanent setup, you can easily solder them together using standard silicone wires.
+                </div>
+
+                <h3 class="mt-2">Wiring Diagram</h3>
+                <img src="img/jiggler_schematic.png" alt="Wiring Diagram" class="diagram-img">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Servo Wire (Typical Color)</th>
+                                <th>Arduino Nano Pin</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>GND</strong> (Brown or Black)</td>
+                                <td><span class="pin">GND</span></td>
+                                <td>Ground connection</td>
+                            </tr>
+                            <tr>
+                                <td><strong>VCC</strong> (Red)</td>
+                                <td><span class="pin">5V</span></td>
+                                <td>Power supply for the motor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Signal / Data</strong> (Orange or Yellow)</td>
+                                <td><span class="pin">D2</span></td>
+                                <td>Default control pin (Can be altered in code later if needed)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="assembly-instructions">
+                    <h3 class="mt-3 mb-1-5">Assembly Instructions</h3>
+                    
+                    <div class="assembly-step">
+                        <h4 class="step-title">Step 1: Print the Case</h4>
+                        <div class="step-grid">
+                            <div class="step-image">
+                                <img src="img/assembly_1.jpg" alt="3D Printed Case">
+                            </div>
+                            <div class="step-desc">
+                                <p>Download the 3MF or STL files from MakerWorld and print them on your 3D printer. The entire device consists of just four printed parts, making assembly a breeze. You won't need any extra hardware—no screws, nuts, or bolts required! Everything is designed to snap together with a snug, secure fit. The base features custom inserts to hold the servo motor, Arduino Nano, and rotating disk perfectly in place, along with built-in cutouts to keep the electronics cool.</p>
+                                <a href="#" class="btn btn-makerworld">Download on MakerWorld</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assembly-step">
+                        <h4 class="step-title">Step 2: Wiring</h4>
+                        <div class="step-grid">
+                            <div class="step-image">
+                                <img src="img/assembly_2.jpg" alt="Wiring Components">
+                            </div>
+                            <div class="step-desc">
+                                <p>Connect the Arduino and the servo motor using standard male-to-female jumper wires. Simply insert the male ends into the Arduino and slide the female connectors over the servo's header pins. This plug-and-play setup requires absolutely zero soldering! However, if you prefer a more permanent build, you can always solder the connections directly. Don't worry too much about which digital pin you choose for the servo signal right now—you can easily remap it later in the web interface.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assembly-step">
+                        <h4 class="step-title">Step 3: Prepare the Gears</h4>
+                        <div class="step-grid">
+                            <div class="step-image">
+                                <img src="img/assembly_3.jpg" alt="Gear Assembly">
+                            </div>
+                            <div class="step-desc">
+                                <p>First, remove the stock plastic horn that comes pre-installed on your servo motor, and push the 3D-printed <strong>worm gear</strong> firmly onto the bare shaft.</p>
+                                <p>Next, grab the larger involute gear (the one attached to the jiggler disk) and slide it onto its center pivot rod inside the case. As you seat the components, make sure the threads of both gears properly align and mesh together so the servo can smoothly drive the disk.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assembly-step">
+                        <h4 class="step-title">Step 4: Insert & Close</h4>
+                        <div class="step-grid">
+                            <div class="step-image">
+                                <img src="img/assembly_4.jpg" alt="Placing Components">
+                            </div>
+                            <div class="step-desc">
+                                <p>Press all your components into their designated slots inside the base. The Arduino Nano has a custom-fitted compartment—it is designed to be a tight squeeze, so don't be afraid to apply a little force until it clicks securely into place. While the servo motor usually includes mounting screws (and the case has holes for them), they are completely optional. The friction fit is strong enough to hold everything on its own.</p>
+                                <p>Finally, tuck your wires neatly out of the way and snap the lid firmly onto the base.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assembly-step">
+                        <h4 class="step-title">Step 5: Connect, Flash & Control</h4>
+                        <div class="step-grid">
+                            <div class="step-image">
+                                <img src="img/assembly_5.jpg" alt="Finished Jiggler">
+                            </div>
+                            <div class="step-desc">
+                                <p>Your hardware is fully assembled! Plug a USB cable into the Arduino and move on to <strong>Step 2</strong> below to install the firmware. Once it is flashed, you can use the web-based Control Panel to tweak your jiggler's speed and movement patterns.</p>
+                                <p>Don't let the compact size fool you—this jiggler works perfectly with almost any mouse on the market. Even if your mouse is large and hangs off the edges of the case, it will still work flawlessly. The only thing that matters is making sure your mouse's optical sensor rests directly over the rotating disk!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Step 2: Install Firmware</h2>
+            <div class="step">
+                <p>The easiest way to get started is using the Web Flasher below. Connect your <strong>Arduino Nano</strong> to your computer via USB. Note: Requires a Chromium-based browser (Chrome, Edge, Opera).</p>
+                
+                <div class="note-box">
+                    <strong>Which button to choose?</strong> Official Arduino Nanos and newer clones use the default bootloader. However, a vast majority of affordable clones on the market still use an older chip architecture. If the first button fails, try the "Old Bootloader" option.
+                </div>
+
+                <div class="btn-container mt-1-5">
+                    <button class="btn btn-flash" arduino-uploader hex-href="jiggler.hex" board="nano">
+                        Flash Nano
+                        <span class="upload-progress"></span>
+                    </button>
+                    <button class="btn btn-flash" arduino-uploader hex-href="jiggler.hex" board="nanoOldBootloader">
+                        Flash (Old Bootloader)
+                        <span class="upload-progress"></span>
+                    </button>
+                </div>
+
+                <div class="note-box warning mt-1">
+                    <strong>⚠️ Web Flasher Troubleshooting</strong><br>
+                    Because clone boards behave differently, you might need a few attempts. If the upload hangs or fails:
+                    <ul class="nested-list">
+                        <li>Try both flash buttons in different orders.</li>
+                        <li>Unplug the USB cable, plug it back in, and refresh this web page.</li>
+                        <li><strong>Manual Reset:</strong> If it continually times out, your board might lack an auto-reset circuit. Press and hold the physical RESET button on the Arduino, click a flash button on the screen, and release the physical button immediately after selecting your COM port.</li>
+                    </ul>
+                </div>
+
+                <h3 class="mt-2 mb-1">Alternative: Compile via Arduino IDE</h3>
+                <p>If the web flasher isn't cooperating, or if you simply want to tinker with the underlying code, you can compile and upload the firmware manually using the traditional Arduino IDE.</p>
+                
+                <ul class="features-list mb-1-5">
+                    <li><strong>Dependencies:</strong> The code relies entirely on the standard, built-in <code>Servo.h</code> and <code>EEPROM.h</code> libraries. Zero external library downloads are required to compile!</li>
+                    <li><strong>Board Setup:</strong> Go to Tools > Board and select "Arduino Nano". Under Tools > Processor, toggle between "ATmega328P" and "ATmega328P (Old Bootloader)" depending on your board.</li>
+                </ul>
+
+                <a href="#" class="btn btn-github">View Source on GitHub</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Step 3: Control Panel</h2>
+            <div class="step panel-control">
+                <p>
+                    Customize your jiggler's behavior on the fly. Adjust each parameter and click <strong>Set</strong> to apply changes immediately — all settings are automatically saved permanently to the device's memory. You can also monitor the built-in terminal below to view real-time device logs, including incoming data from the Arduino, outgoing commands, and connection errors. Connect your device, dial in your preferred settings, and run it live!
+                </p>
+                
+                <div id="status" class="status">Disconnected</div>
+                
+                <div class="main-controls">
+                    <button id="btnConnect">Connect</button>
+                    <button id="btnGet" disabled>Get Settings</button>
+                    <button id="btnStart" class="btn-start" disabled>START</button>
+                    <button id="btnStop" class="btn-stop" disabled>STOP</button>
+                </div>
+
+                <div class="row">
+                    <div class="param-label">
+                        <label>Forward Speed (1-90)</label>
+                        <span class="param-desc">Sets the relative motor speed when moving the mouse forward (1 is slowest, 90 is max speed).</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="range" id="slideFwd" min="1" max="90" value="10">
+                        <input type="number" id="valFwd" min="1" max="90" value="10">
+                        <button class="btnSend" data-cmd="SET_FWD:" data-input="valFwd" disabled>Set</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="param-label">
+                        <label>Reverse Speed (1-90)</label>
+                        <span class="param-desc">Sets the relative motor speed when returning to the starting position (1 is slowest, 90 is max speed).</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="range" id="slideRev" min="1" max="90" value="10">
+                        <input type="number" id="valRev" min="1" max="90" value="10">
+                        <button class="btnSend" data-cmd="SET_REV:" data-input="valRev" disabled>Set</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="param-label">
+                        <label>Spin Time (ms)</label>
+                        <span class="param-desc">How long the motor runs in a single direction before pausing or reversing.</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="range" id="slideSpin" min="100" max="5000" step="100" value="1500">
+                        <input type="number" id="valSpin" min="100" max="5000" step="100" value="1500">
+                        <button class="btnSend" data-cmd="SET_SPIN:" data-input="valSpin" disabled>Set</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="param-label">
+                        <label>Pause Time (ms)</label>
+                        <span class="param-desc">The wait time between each movement cycle.</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="range" id="slidePause" min="100" max="5000" step="100" value="500">
+                        <input type="number" id="valPause" min="100" max="5000" step="100" value="500">
+                        <button class="btnSend" data-cmd="SET_PAUSE:" data-input="valPause" disabled>Set</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="param-label">
+                        <label>Start on Boot</label>
+                        <span class="param-desc">Automatically begins jiggling as soon as the device receives USB power.</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="checkbox" id="valBoot">
+                        <button id="btnSendBoot" class="btnSend" disabled>Set</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="param-label">
+                        <label>Servo Pin (2-19)</label>
+                        <span class="param-desc">Changes the control pin (D2-D13 or A0-A5). Note: Analog pin A0 is 14, A5 is 19.</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="valPin" min="2" max="19" value="9">
+                        <button class="btnSend" data-cmd="SET_PIN:" data-input="valPin" disabled>Set</button>
+                    </div>
+                </div>
+
+                <div id="terminal"></div>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            JiggleMouse is an open-source DIY project.
+        </footer>
+    </div>
+
+    <div id="imageModal" class="modal hidden">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
