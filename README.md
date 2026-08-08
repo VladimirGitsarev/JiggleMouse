@@ -30,7 +30,7 @@ You only need two affordable electronic components to bring this to life:
 
 This model is highly optimized for a hassle-free printing experience. The entire device consists of only **4 printed parts** and prints easily with **absolutely no supports**. Everything is designed to snap together with a secure friction fit, meaning you do not need any screws, nuts, or extra hardware.
 
-👉 **[Download the STL/3MF files on MakerWorld](INSERT_MAKERWORLD_LINK_HERE)**
+👉 **[Download the STL/3MF files on MakerWorld](https://makerworld.com/en/models/3148563-jigglemouse-undetectable-physical-mouse-jiggler#profileId-3556197)**
 
 ![JiggleMouse Assembly](img/assembly_1.jpg)
 
@@ -41,7 +41,7 @@ This model is highly optimized for a hassle-free printing experience. The entire
 You do not need to know how to code to build this project! You can install the firmware in one click using the custom Web Flasher.
 
 ### Option 1: Web Flasher (Recommended)
-1. Go to the **[JiggleMouse Project Page](INSERT_GITHUB_PAGES_LINK_HERE)** (Requires a Chromium browser like Chrome or Edge).
+1. Go to the **[JiggleMouse Project Page](https://vladimirgitsarev.github.io/JiggleMouse/)** (Requires a Chromium browser like Chrome or Edge).
 2. Connect your Arduino Nano to your PC using a USB **data** cable.
 3. Click **Flash Nano** in the "Install Firmware" section.
 4. Once flashed, use the Control Panel on the same webpage to customize your rotation speeds, spin times, pause intervals, and boot preferences.
